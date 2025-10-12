@@ -1,0 +1,19 @@
+name: Run Checks
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+
+jobs:
+    checks:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+            - uses: oven-sh/setup-bun@v2
+            - run: bun install --frozen-lockfile
+
+            - run: "bun -F\\* run check:format"
+            - run: "bun -F\\* run check:type"
+            - run: "bun -F\\* run check:lint"
