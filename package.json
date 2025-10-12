@@ -6,6 +6,6 @@
         "backend"
     ],
     "scripts": {
-        "check": "bun -F\\* run check:type; bun -F\\* run check:lint; bun -F\\* run check:format"
+        "check": "bun ci; bun -F\\* run check:type; bun -F\\* run check:lint; bun -F\\* run check:format"
     }
 }
