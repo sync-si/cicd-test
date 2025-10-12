@@ -2,8 +2,7 @@
     "name": "cicd-test",
     "version": "0.0.0-dev",
     "workspaces": [
-        "frontend",
-        "backend"
+        "*end"
     ],
     "scripts": {
         "check": "bun ci; bun -F\\* run check:type; bun -F\\* run check:lint; bun -F\\* run check:format"

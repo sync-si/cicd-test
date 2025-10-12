@@ -1,0 +1,66 @@
+name: CI
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+
+jobs:
+    checks:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+            - uses: oven-sh/setup-bun@v2
+            - run: bun ci
+
+            - run: "bun -F\\* run check:format"
+            - run: "bun -F\\* run check:type"
+            - run: "bun -F\\* run check:lint"
+
+    build:
+        runs-on: ubuntu-latest
+        outputs:
+            backend_tag: ${{ steps.vars.outputs.backend_tag }}
+            frontend_tag: ${{ steps.vars.outputs.frontend_tag }}
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: docker/login-action@v3.6.0
+              with:
+                  registry: ghcr.io
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+
+            - uses: docker/setup-qemu-action@v3
+
+            - uses: docker/setup-buildx-action@v3
+
+            - name: Extract branch and commit
+              id: vars
+              run: |
+                  BRANCH=$(echo "${GITHUB_REF_NAME}" | tr '/' '-')
+                  COMMIT=${GITHUB_SHA::7}
+                  echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+                  echo "commit=$COMMIT" >> $GITHUB_OUTPUT
+                  echo "backend_tag=ghcr.io/${GITHUB_REPOSITORY_OWNER}/cicd-test-backend:${BRANCH}-${COMMIT}" >> $GITHUB_OUTPUT
+                  echo "frontend_tag=ghcr.io/${GITHUB_REPOSITORY_OWNER}/cicd-test-frontend:${BRANCH}-${COMMIT}" >> $GITHUB_OUTPUT
+
+            - name: Build frontend
+              uses: docker/build-push-action@v6
+              with:
+                  platforms: linux/amd64,linux/arm64
+                  push: true
+                  context: .
+                  file: ./frontend/Dockerfile
+                  tags: ${{ steps.vars.outputs.frontend_tag }}
+
+            - name: Build backend
+              uses: docker/build-push-action@v6
+              with:
+                  platforms: linux/amd64,linux/arm64
+                  push: true
+                  context: .
+                  file: ./backend/Dockerfile
+                  tags: ${{ steps.vars.outputs.backend_tag }}
