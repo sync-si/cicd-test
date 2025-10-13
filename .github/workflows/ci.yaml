@@ -27,6 +27,7 @@ jobs:
         outputs:
             backend_tag: ${{ steps.vars.outputs.backend_tag }}
             frontend_tag: ${{ steps.vars.outputs.frontend_tag }}
+            branch: ${{ steps.vars.outputs.branch }}
 
         steps:
             - uses: actions/checkout@v4
@@ -68,3 +69,18 @@ jobs:
                   context: .
                   file: ./backend/Dockerfile
                   tags: ${{ steps.vars.outputs.backend_tag }}
+
+    deploy:
+        needs: build
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Deploy to test environment
+              uses: appleboy/ssh-action@v1
+              with:
+                  host: ${{ secrets.DEPLOY_HOST }}
+                  username: ${{ secrets.DEPLOY_USERNAME }}
+                  key: ${{ secrets.DEPLOY_KEY }}
+                  script: ~/deploy-branch.sh ${{ needs.build.outputs.branch }} ${{ needs.build.outputs.backend_tag }} ${{ needs.build.outputs.frontend_tag }}
