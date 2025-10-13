@@ -39,9 +39,7 @@ function fetchRandomNumber() {
 </template>
 
 <style scoped>
-
-  * {
-    font-family: monospace;
-  }
-
+* {
+  font-family: monospace;
+}
 </style>
