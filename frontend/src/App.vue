@@ -28,10 +28,12 @@ function fetchRandomNumber() {
   <h1>Sync CI/CD test</h1>
 
   <button @click="fetchRandomNumber" :disabled="loading">
-    {{ loading ? 'Loading...' : 'Fetch Random Number' }}
+    {{ loading ? 'Loading...' : 'Fetch Big Random Number' }}
   </button>
 
-  <div v-if="randomNumber !== undefined"><strong>Random Number:</strong> {{ randomNumber }}</div>
+  <div v-if="randomNumber !== undefined">
+    <strong>Big Random Number:</strong> {{ randomNumber }}
+  </div>
 
   <div v-if="err" style="color: red"><strong>Error:</strong> {{ err }}</div>
 </template>
