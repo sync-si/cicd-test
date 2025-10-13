@@ -38,4 +38,8 @@ function fetchRandomNumber() {
   <div v-if="err" style="color: red"><strong>Error:</strong> {{ err }}</div>
 </template>
 
-<style scoped></style>
+<style scoped>
+* {
+  font-family: monospace;
+}
+</style>
