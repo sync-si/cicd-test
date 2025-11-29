@@ -1,0 +1,67 @@
+openapi: 3.1.0
+info:
+  title: API Spec
+  description: API Spec
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+  /health:
+    get:
+      summary: Vrne status samega backenda
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  vrednost:
+                    type: integer
+                example: # Sample data
+                  vrednost: 200
+        "300":
+          description: Injured
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type: integer
+                example:
+                  vrednost: 300
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type: integer
+                example:
+                  vrednost: 400
+        "500":
+          description: Unknown
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type: integer
+                example:
+                  vrednost: 500
+
+  /room/create:
+    post:
+      summary: naredi room in prvega userja
+      responses:
+
+  /room/join:
+    post:
+      summary: poveze se na room
+      responses:
+  /connect/:id:
+    get:
+      summary: naredi room in prvega userja
+      responses:

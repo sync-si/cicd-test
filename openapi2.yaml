@@ -1,0 +1,24 @@
+openapi: 3.1.0
+info:
+  title: Title
+  description: Title
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+  /media/youtube/search:
+    post:
+      summary: naredi room in prvega userja
+      responses:
+  /media/validate:
+    post:
+      summary: poveze se na room
+      responses:
+  /media/chapters/:id:
+    get:
+      summary: naredi room in prvega userja
+      responses:
+  /media/thumbnail/:id:
+    get:
+      summary: naredi room in prvega userja
+      responses:
